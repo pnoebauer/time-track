@@ -6,11 +6,33 @@ import {
   View,
   ScrollView
 } from 'react-native';
+import { v4 as uuidv4 } from 'uuid'; //library to generate unique ids
 
 import EditableTimer from './components/EditableTimer';
 import ToggleableTimerForm from './components/ToggleableTimerForm';
 
 export default class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      timers: [
+        {
+          id: uuidv4(),
+          title: "Shopping", 
+          project: "Buying shoes", 
+          elapsed: "8986300", 
+          isRunning: true
+        },
+        {
+          id: uuidv4(),
+          title: "Running",
+          project: "Sports", 
+          elapsed: "3890985", 
+          editFormOpen: false
+        }
+      ]
+    }
+  }
   render() {
     return (
       <View style={styles.appContainer}>
@@ -21,20 +43,20 @@ export default class App extends React.Component {
         </View>
         <ScrollView style={styles.timerList}>
           <ToggleableTimerForm isOpen={false} /> 
-          <EditableTimer
-            id="1"
-            title="Shopping" 
-            project="Buying shoes" 
-            elapsed="8986300" 
-            isRunning
-          />
-          <EditableTimer
-            id="2"
-            title="Running" 
-            project="Sports" 
-            elapsed="3890985" 
-            editFormOpen
-          />
+          {this.state.timers.map(({ id, title, project, elapsed, isRunning, editFormOpen }, index) => {
+            return (
+              <EditableTimer
+                key={id}
+                id={id}
+                title={title}
+                project={project}
+                elapsed={elapsed}
+                isRunning={isRunning}
+                editFormOpen={editFormOpen}
+              />
+            )
+          })
+        }
         </ScrollView>
       </View>
     );
