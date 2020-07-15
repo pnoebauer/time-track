@@ -41,7 +41,23 @@ export default class App extends React.Component {
       timers: [newTimer(timer), ...timers],
     }); 
   };
-       
+
+  handleFormSubmit = attrs => { 
+    const { timers } = this.state;
+    this.setState({
+      timers: timers.map(timer => {
+          if (timer.id === attrs.id) {
+            const { title, project } = attrs;
+            return { 
+              ...timer, 
+              title, 
+              project,
+            }; 
+          }
+        return timer; 
+      }),
+    }); 
+  };
 
   render() {
     return (
@@ -55,7 +71,7 @@ export default class App extends React.Component {
           <ToggleableTimerForm 
             onFormSubmit={this.handleCreateFormSubmit} 
           /> 
-          {this.state.timers.map(({ id, title, project, elapsed, isRunning, editFormOpen }, index) => {
+          {this.state.timers.map(({ id, title, project, elapsed, isRunning }, index) => {
             return (
               <EditableTimer
                 key={id}
@@ -64,7 +80,7 @@ export default class App extends React.Component {
                 project={project}
                 elapsed={elapsed}
                 isRunning={isRunning}
-                editFormOpen={editFormOpen}
+                onFormSubmit={this.handleFormSubmit}
               />
             )
           })
