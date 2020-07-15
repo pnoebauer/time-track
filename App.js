@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid'; //library to generate unique ids
 
 import EditableTimer from './components/EditableTimer';
 import ToggleableTimerForm from './components/ToggleableTimerForm';
+import { newTimer } from './utils/TimerUtils';
 
 export default class App extends React.Component {
   constructor() {
@@ -31,8 +32,17 @@ export default class App extends React.Component {
           editFormOpen: false
         }
       ]
-    }
+    };
   }
+
+  handleCreateFormSubmit = timer => { 
+    const { timers } = this.state;
+    this.setState({
+      timers: [newTimer(timer), ...timers],
+    }); 
+  };
+       
+
   render() {
     return (
       <View style={styles.appContainer}>
@@ -42,7 +52,9 @@ export default class App extends React.Component {
           </Text>
         </View>
         <ScrollView style={styles.timerList}>
-          <ToggleableTimerForm isOpen={false} /> 
+          <ToggleableTimerForm 
+            onFormSubmit={this.handleCreateFormSubmit} 
+          /> 
           {this.state.timers.map(({ id, title, project, elapsed, isRunning, editFormOpen }, index) => {
             return (
               <EditableTimer
