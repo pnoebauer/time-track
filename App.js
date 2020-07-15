@@ -59,6 +59,14 @@ export default class App extends React.Component {
     }); 
   };
 
+  handleRemovePress = (id) => {
+    // console.log('press',id)
+    this.setState({ 
+      timers: this.state.timers.filter(timer => 
+        timer.id !== id)
+    });
+  };
+
   render() {
     return (
       <View style={styles.appContainer}>
@@ -81,6 +89,7 @@ export default class App extends React.Component {
                 elapsed={elapsed}
                 isRunning={isRunning}
                 onFormSubmit={this.handleFormSubmit}
+                onRemovePress={this.handleRemovePress}
               />
             )
           })
